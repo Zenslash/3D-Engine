@@ -4,7 +4,9 @@
 
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Graphics.h"
 #include <optional>
+#include <memory>
 
 class Window
 {
@@ -45,6 +47,7 @@ public:
 
 	void SetTitle(const std::string& title);
 	static std::optional<int> ProcessMesssages();
+	Graphics& GFX();
 private:
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -56,6 +59,8 @@ private:
 	int width;
 	int height;
 	HWND hWnd;
+
+	std::unique_ptr<Graphics> pGfx;
 };
 
 
