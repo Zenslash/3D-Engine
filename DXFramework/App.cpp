@@ -19,5 +19,7 @@ int App::Go()
 
 void App::Tick()
 {
+	wnd.GFX().ClearBuffer(0.5f, 0.5f, 0.5f);
 
+	wnd.GFX().RenderFrame();
 }

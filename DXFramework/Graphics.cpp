@@ -35,6 +35,15 @@ Graphics::Graphics(HWND hWnd)
 		nullptr,
 		&pContext
 	);
+	//Gain access to back buffer texture
+	ID3D11Resource* pBackBuffer = nullptr;
+	pSwapChain->GetBuffer(0, __uuidof(ID3D11Resource), reinterpret_cast<void**>(&pBackBuffer));
+	pDevice->CreateRenderTargetView(
+		pBackBuffer,
+		nullptr,
+		&pRenderTarget
+	);
+	pBackBuffer->Release();
 }
 
 Graphics::~Graphics()
@@ -51,4 +60,19 @@ Graphics::~Graphics()
 	{
 		pSwapChain->Release();
 	}
+	if(pRenderTarget != nullptr)
+	{
+		pRenderTarget->Release();
+	}
+}
+
+void Graphics::RenderFrame()
+{
+	pSwapChain->Present(1u, 0u);
+}
+
+void Graphics::ClearBuffer(float r, float g, float b) noexcept
+{
+	const float color[] = { r, g, b, 1.f };
+	pContext->ClearRenderTargetView(pRenderTarget, color);
 }

@@ -1,4 +1,6 @@
-﻿  Graphics.cpp
+﻿  App.cpp
+  Graphics.cpp
+  WinMain.cpp
   Window.cpp
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\optional(69,17): warning C4244: 'initializing': conversion from 'WPARAM' to 'int', possible loss of data (compiling source file Window.cpp)
 E:\CG\Projects\DXFramework\DXFramework\DXFramework\Window.cpp(277): message : see reference to function template instantiation 'std::_Optional_destruct_base<_Ty,true>::_Optional_destruct_base<WPARAM&>(std::in_place_t,WPARAM &)' being compiled
