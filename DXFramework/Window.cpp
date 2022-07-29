@@ -29,23 +29,23 @@ Window::WindowClass::~WindowClass()
 	UnregisterClass(wndClassName, GetInstance());
 }
 
-Window::Exception::Exception(int line, const char* file, HRESULT hr) noexcept
-	: ZenException(line, file),
+Window::HrException::HrException(int line, const char* file, HRESULT hr) noexcept
+	: Exception(line, file),
 	hr(hr)
 {}
 
-const char* Window::Exception::what() const noexcept
+const char* Window::HrException::what() const noexcept
 {
 	std::ostringstream oss;
 	oss << GetType() << std::endl;
 	oss << "[Error code] " << GetErrorCode() << std::endl;
-	oss << "[Description] " << GetErrorString() << std::endl;
+	oss << "[Description] " << GetErrorDescription() << std::endl;
 	oss << GetOriginString();
 	whatBuffer = oss.str();
 	return whatBuffer.c_str();
 }
 
-const char* Window::Exception::GetType() const noexcept
+const char* Window::HrException::GetType() const noexcept
 {
 	return "Window ZenException";
 }
@@ -68,12 +68,12 @@ std::string Window::Exception::TranslateErrorCode(HRESULT hr) noexcept
 	return errorStr;
 }
 
-HRESULT Window::Exception::GetErrorCode() const noexcept
+HRESULT Window::HrException::GetErrorCode() const noexcept
 {
 	return hr;
 }
 
-std::string Window::Exception::GetErrorString() const noexcept
+std::string Window::HrException::GetErrorDescription() const noexcept
 {
 	return TranslateErrorCode(hr);
 }
@@ -152,6 +152,10 @@ std::optional<int> Window::ProcessMesssages()
 
 Graphics& Window::GFX()
 {
+	if (!pGfx)
+	{
+		throw CHWND_NOGFX_EXCEPT();
+	}
 	return *pGfx;
 }
 
@@ -273,4 +277,9 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+const char* Window::NoGfxException::GetType() const noexcept
+{
+	return "Window Exception [NoGfxException]";
 }
