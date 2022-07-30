@@ -4,6 +4,7 @@
 #include "ZenException.h"
 #include <d3d11.h>
 #include <vector>
+#include <wrl.h>
 #include "DxgiInfoManager.h"
 
 class Graphics
@@ -39,9 +40,9 @@ public:
 	};
 public:
 	Graphics(HWND hWnd);
+	~Graphics() = default;
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
-	~Graphics();
 
 	void RenderFrame();
 	void ClearBuffer(float r, float g, float b) noexcept;
@@ -49,9 +50,9 @@ private:
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
 #endif
-	ID3D11Device* pDevice = nullptr;
-	IDXGISwapChain* pSwapChain = nullptr;
-	ID3D11DeviceContext* pContext = nullptr;
-	ID3D11RenderTargetView* pRenderTarget = nullptr;;
+	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
+	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwapChain;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pRenderTarget;
 };
 

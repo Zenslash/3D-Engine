@@ -5,6 +5,7 @@
 
 #pragma comment(lib, "d3d11.lib")
 
+namespace wrl = Microsoft::WRL;
 
 Graphics::Graphics(HWND hWnd)
 {
@@ -48,34 +49,13 @@ Graphics::Graphics(HWND hWnd)
 	));
 
 	//Gain access to back buffer texture
-	ID3D11Resource* pBackBuffer = nullptr;
-	GFX_THROW_INFO(pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&pBackBuffer)));
+	wrl::ComPtr<ID3D11Resource> pBackBuffer = nullptr;
+	GFX_THROW_INFO(pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &pBackBuffer));
 	GFX_THROW_INFO(pDevice->CreateRenderTargetView(
-		pBackBuffer,
+		pBackBuffer.Get(),
 		nullptr,
 		&pRenderTarget
 	));
-	pBackBuffer->Release();
-}
-
-Graphics::~Graphics()
-{
-	if(pDevice != nullptr)
-	{
-		pDevice->Release();
-	}
-	if(pContext != nullptr)
-	{
-		pContext->Release();
-	}
-	if(pSwapChain != nullptr)
-	{
-		pSwapChain->Release();
-	}
-	if(pRenderTarget != nullptr)
-	{
-		pRenderTarget->Release();
-	}
 }
 
 void Graphics::RenderFrame()
@@ -102,7 +82,7 @@ void Graphics::RenderFrame()
 void Graphics::ClearBuffer(float r, float g, float b) noexcept
 {
 	const float color[] = { r, g, b, 1.f };
-	pContext->ClearRenderTargetView(pRenderTarget, color);
+	pContext->ClearRenderTargetView(pRenderTarget.Get(), color);
 }
 
 Graphics::HrException::HrException(int line, const char* file, HRESULT hr) noexcept
