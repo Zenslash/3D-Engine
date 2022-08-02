@@ -5,7 +5,14 @@
       <FullPath>E:\CG\Projects\DXFramework\DXFramework\x64\Debug\DXFramework.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
-  <ContentFiles />
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\PixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\VertexShader.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />
 </Project>

@@ -2,8 +2,10 @@
 #include "dxerr.h"
 #include <sstream>
 #include "GraphicsMacro.h"
+#include <d3dcompiler.h>
 
 #pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "D3DCompiler.lib")
 
 namespace wrl = Microsoft::WRL;
 
@@ -85,6 +87,95 @@ void Graphics::ClearBuffer(float r, float g, float b) noexcept
 	pContext->ClearRenderTargetView(pRenderTarget.Get(), color);
 }
 
+void Graphics::DrawTestTriangle()
+{
+	namespace wrl = Microsoft::WRL;
+	HRESULT hr;
+
+	struct Vertex
+	{
+		float x;
+		float y;
+	};
+
+	//Create vertex array
+	const Vertex vertices[] =
+	{
+		{0.0f, 0.5f},
+		{0.5f, -0.5f},
+		{-0.5f, -0.5f}
+	};
+
+	//Create vertex buffer
+	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
+	D3D11_BUFFER_DESC vertexDesc = {};
+	vertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexDesc.Usage = D3D11_USAGE_DEFAULT;
+	vertexDesc.ByteWidth = sizeof(vertices);
+	vertexDesc.CPUAccessFlags = 0u;
+	vertexDesc.MiscFlags = 0u;
+	vertexDesc.StructureByteStride = sizeof(Vertex);
+	D3D11_SUBRESOURCE_DATA vertexData = {};
+	vertexData.pSysMem = vertices;
+	GFX_THROW_INFO(pDevice->CreateBuffer(&vertexDesc, &vertexData, &pVertexBuffer));
+
+	//Bind buffer to IA
+	const UINT stride = sizeof(Vertex);
+	const UINT offset = 0u;
+	pContext->IASetVertexBuffers(0u, 1u, pVertexBuffer.GetAddressOf(), &stride, &offset);
+
+	//Create vertex shader
+	wrl::ComPtr<ID3D11VertexShader> pVertexShader;
+	wrl::ComPtr<ID3DBlob> pBlob;
+	GFX_THROW_INFO(D3DReadFileToBlob(L"VertexShader.cso", &pBlob));
+	GFX_THROW_INFO(pDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader));
+
+	//Bind vertex shader
+	pContext->VSSetShader(pVertexShader.Get(), nullptr, 0u);
+
+	//Input layout (vertex)
+	wrl::ComPtr<ID3D11InputLayout> pInputLayout;
+	const D3D11_INPUT_ELEMENT_DESC ied[] =
+	{
+		{"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+	};
+	GFX_THROW_INFO(pDevice->CreateInputLayout(
+		ied, std::size(ied),
+		pBlob->GetBufferPointer(),
+		pBlob->GetBufferSize(),
+		&pInputLayout
+	));
+
+	//Bind vertex layout
+	pContext->IASetInputLayout(pInputLayout.Get());
+
+	//Create pixel shader
+	wrl::ComPtr<ID3D11PixelShader> pPixelShader;
+	GFX_THROW_INFO(D3DReadFileToBlob(L"PixelShader.cso", &pBlob));
+	GFX_THROW_INFO(pDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader));
+
+	//Bind pixel shader
+	pContext->PSSetShader(pPixelShader.Get(), nullptr, 0u);
+
+	//Bind render target
+	pContext->OMSetRenderTargets(1u, pRenderTarget.GetAddressOf(), nullptr);
+
+	//Set primitive topology
+	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//Configure viewport
+	D3D11_VIEWPORT vp;
+	vp.Width = 800;
+	vp.Height = 600;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	vp.MinDepth = 0;
+	vp.MaxDepth = 1;
+	pContext->RSSetViewports(1u, &vp);
+
+	GFX_THROW_INFO_ONLY(pContext->Draw((UINT)std::size(vertices), 0u));
+}
+
 Graphics::HrException::HrException(int line, const char* file, HRESULT hr) noexcept
 	:
 	Exception(line, file),
@@ -152,4 +243,40 @@ std::string Graphics::HrException::GetErrorInfo() const noexcept
 const char* Graphics::DeviceRemovedException::GetType() const noexcept
 {
 	return "Graphics Exception [Device Removed] (DXGI_ERROR_DEVICE_REMOVED)";
+}
+
+Graphics::InfoException::InfoException(int line, const char* file, std::vector<std::string> msg) noexcept
+	: Exception(line, file)
+{
+	//Join all messages
+	for (const auto& m : msg)
+	{
+		info += m;
+		info.push_back('\n');
+	}
+	//Remove '\n' if info not empty
+	if (!info.empty())
+	{
+		info.pop_back();
+	}
+}
+
+const char* Graphics::InfoException::what() const noexcept
+{
+	std::ostringstream oss;
+	oss << GetType() << std::endl
+		<< "\n[Error info]\n" << GetErrorInfo() << std::endl << std::endl;
+	oss << GetOriginString();
+	whatBuffer = oss.str();
+	return whatBuffer.c_str();
+}
+
+const char* Graphics::InfoException::GetType() const noexcept
+{
+	return "Graphics Info Exception";
+}
+
+std::string Graphics::InfoException::GetErrorInfo() const noexcept
+{
+	return info;
 }
