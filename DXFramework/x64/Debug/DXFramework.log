@@ -1,3 +1,3 @@
 ﻿  Graphics.cpp
-E:\CG\Projects\DXFramework\DXFramework\DXFramework\Graphics.cpp(147,1): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+E:\CG\Projects\DXFramework\DXFramework\DXFramework\Graphics.cpp(212,1): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
   DXFramework.vcxproj -> E:\CG\Projects\DXFramework\DXFramework\x64\Debug\DXFramework.exe

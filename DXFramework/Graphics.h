@@ -56,7 +56,7 @@ public:
 
 	void RenderFrame();
 	void ClearBuffer(float r, float g, float b) noexcept;
-	void DrawTestTriangle();
+	void DrawTestTriangle(float angle);
 private:
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
