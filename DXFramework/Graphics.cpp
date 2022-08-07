@@ -3,11 +3,13 @@
 #include <sstream>
 #include "GraphicsMacro.h"
 #include <d3dcompiler.h>
+#include <DirectXMath.h>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
 
 namespace wrl = Microsoft::WRL;
+namespace dx = DirectX;
 
 Graphics::Graphics(HWND hWnd)
 {
@@ -87,7 +89,7 @@ void Graphics::ClearBuffer(float r, float g, float b) noexcept
 	pContext->ClearRenderTargetView(pRenderTarget.Get(), color);
 }
 
-void Graphics::DrawTestTriangle(float angle)
+void Graphics::DrawTestTriangle(float angle, float x, float y)
 {
 	namespace wrl = Microsoft::WRL;
 	HRESULT hr;
@@ -98,6 +100,7 @@ void Graphics::DrawTestTriangle(float angle)
 		{
 			float x;
 			float y;
+			float z;
 		} pos;
 
 		struct
@@ -112,9 +115,14 @@ void Graphics::DrawTestTriangle(float angle)
 	//Create vertex array
 	const Vertex vertices[] =
 	{
-		{0.0f, 0.5f, 255, 255, 0, 255},
-		{0.5f, -0.5f, 0, 255, 255, 255},
-		{-0.5f, -0.5f, 255, 0, 255, 255}
+		{-1.0f, -1.0f, -1.0f, 255, 255, 0, 255},	//bottom left corner
+		{-1.0f, -1.0f, 1.0f, 255, 0, 0, 255},		//bottom upper left corner
+		{1.0f, -1.0f, 1.0f, 0, 255, 0, 255},		//bottom upper right corner
+		{1.0f, -1.0f, -1.0f, 0, 0, 0, 255},		//bottom right corner
+		{-1.0f, 1.0f, -1.0f, 255, 126, 126, 255},		//upper left corner
+		{-1.0f, 1.0f, 1.0f, 126, 255, 0, 255},		//upper upper left corner
+		{1.0f, 1.0f, 1.0f, 126, 255, 255, 255},		//upper upper right corner
+		{1.0f, 1.0f, -1.0f, 255, 255, 0, 255}		//upper right corner
 	};
 
 	//Create vertex buffer
@@ -138,7 +146,12 @@ void Graphics::DrawTestTriangle(float angle)
 	//Create index buffer
 	const unsigned short indices[] =
 	{
-		0, 1, 2
+		3, 1, 0,	2,1,3,	//+
+		0, 1, 4,	1,5,4,	//+
+		0, 4, 3,	3,4,7,	//+
+		2, 3, 7,	7,6,2,	//+
+		6, 7, 5,	5,7,4,	//+
+		2, 6, 1,	1,6,5	//+
 	};
 	wrl::ComPtr<ID3D11Buffer> pIndexBuffer;
 	D3D11_BUFFER_DESC indexDesc = {};
@@ -158,18 +171,15 @@ void Graphics::DrawTestTriangle(float angle)
 	//Create constant buffer for transformation matrix
 	struct ConstantBuffer
 	{
-		struct
-		{
-			float element[4][4];
-		} transformation;
+		dx::XMMATRIX transform;
 	};
 	const ConstantBuffer cb =
 	{
 		{
-			(3.0f / 4.0f) * std::cos(angle),	std::sin(angle), 0.0f, 0.0f,
-			(3.0f / 4.0f) * -std::sin(angle),	std::cos(angle), 0.0f, 0.0f,
-			0.0f,				0.0f,			 1.0f, 0.0f,
-			0.0f,				0.0f,			 0.0f, 1.0f,
+			dx::XMMatrixRotationX(angle) *
+			dx::XMMatrixRotationY(angle) *
+			dx::XMMatrixTranslation(x, y, 4.0f) *
+			dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f)
 		}
 	};
 	wrl::ComPtr<ID3D11Buffer> pConstantBuffer;
@@ -201,8 +211,8 @@ void Graphics::DrawTestTriangle(float angle)
 	wrl::ComPtr<ID3D11InputLayout> pInputLayout;
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
-		{"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 8u, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12u, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 	GFX_THROW_INFO(pDevice->CreateInputLayout(
 		ied, std::size(ied),

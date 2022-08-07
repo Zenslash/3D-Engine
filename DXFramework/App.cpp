@@ -20,6 +20,6 @@ int App::Go()
 void App::Tick()
 {
 	wnd.GFX().ClearBuffer(0.5f, 0.5f, 0.5f);
-	wnd.GFX().DrawTestTriangle(timer.Peek());
+	wnd.GFX().DrawTestTriangle(timer.Peek(), wnd.mouse.GetPosX() / 400.0f - 1.0f, -wnd.mouse.GetPosY() / 300.0f + 1.0f);
 	wnd.GFX().RenderFrame();
 }
