@@ -1,6 +1,7 @@
 #pragma once
 #include "WinHeader.h"
 #include "ZenException.h"
+#include "WindowMacro.h"
 
 #include "Keyboard.h"
 #include "Mouse.h"
@@ -73,8 +74,3 @@ private:
 
 	std::unique_ptr<Graphics> pGfx;
 };
-
-
-#define CHWND_EXCEPT(hr) Window::HrException(__LINE__, __FILE__, hr)
-#define CHWND_LAST_EXCEPT() Window::HrException(__LINE__, __FILE__, GetLastError())
-#define CHWND_NOGFX_EXCEPT() Window::NoGfxException(__LINE__, __FILE__)
