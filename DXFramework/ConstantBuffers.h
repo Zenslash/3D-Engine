@@ -2,13 +2,13 @@
 #include "Bindable.h"
 #include "GraphicsMacro.h"
 
-template<class T>
+template<typename T>
 class ConstantBuffer : public Bindable
 {
 public:
 	void Update(Graphics& gfx, const T& consts)
 	{
-		GFX_INFO_MANAGER(gfx);
+		GFX_GET_INFO_MANAGER(gfx);
 
 		D3D11_MAPPED_SUBRESOURCE subresource;
 		GFX_THROW_INFO(GetContext(gfx)->Map(
@@ -33,7 +33,7 @@ public:
 		csd.pSysMem = &consts;
 		GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&cbd, &csd, &pConstantBuffer));
 	}
-	ContantBuffer(Graphics& gfx)
+	ConstantBuffer(Graphics& gfx)
 	{
 		GFX_GET_INFO_MANAGER(gfx);
 

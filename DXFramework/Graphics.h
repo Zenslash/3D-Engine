@@ -5,6 +5,8 @@
 #include <d3d11.h>
 #include <vector>
 #include <wrl.h>
+#include <memory>
+#include <DirectXMath.h>
 #include "DxgiInfoManager.h"
 
 class Graphics
@@ -57,7 +59,9 @@ public:
 
 	void RenderFrame();
 	void ClearBuffer(float r, float g, float b) noexcept;
-	void DrawTestTriangle(float angle, float x, float y);
+	void DrawIndexed(UINT indexCount) noexcept(!IS_DEBUG);
+	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
+	DirectX::XMMATRIX GetProjection() const noexcept;
 private:
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
@@ -67,5 +71,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pRenderTarget;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDepthStencilView;
+
+	DirectX::XMMATRIX projMatrix;
 };
 

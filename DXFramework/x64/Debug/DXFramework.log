@@ -1,2 +1,36 @@
-﻿  Bindable.cpp
+﻿  App.cpp
+  DxgiInfoManager.cpp
+  WinMain.cpp
+  Window.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\optional(69,17): warning C4244: 'initializing': conversion from 'WPARAM' to 'int', possible loss of data (compiling source file Window.cpp)
+E:\CG\Projects\DXFramework\DXFramework\DXFramework\Window.cpp(286): message : see reference to function template instantiation 'std::_Optional_destruct_base<_Ty,true>::_Optional_destruct_base<WPARAM&>(std::in_place_t,WPARAM &)' being compiled
+          with
+          [
+              _Ty=int
+          ]
+E:\CG\Projects\DXFramework\DXFramework\DXFramework\Window.cpp(286): message : see reference to function template instantiation 'std::_Optional_destruct_base<_Ty,true>::_Optional_destruct_base<WPARAM&>(std::in_place_t,WPARAM &)' being compiled
+          with
+          [
+              _Ty=int
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\optional(184): message : see reference to function template instantiation 'std::_Optional_construct_base<_Ty>::_Optional_construct_base<WPARAM&>(std::in_place_t,WPARAM &)' being compiled
+          with
+          [
+              _Ty=int
+          ] (compiling source file Window.cpp)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\optional(184): message : see reference to function template instantiation 'std::_Optional_construct_base<_Ty>::_Optional_construct_base<WPARAM&>(std::in_place_t,WPARAM &)' being compiled
+          with
+          [
+              _Ty=int
+          ] (compiling source file Window.cpp)
+E:\CG\Projects\DXFramework\DXFramework\DXFramework\Window.cpp(143): message : see reference to function template instantiation 'std::optional<int>::optional<WPARAM&,0>(_Ty2)' being compiled
+          with
+          [
+              _Ty2=WPARAM &
+          ]
+E:\CG\Projects\DXFramework\DXFramework\DXFramework\Window.cpp(143): message : see reference to function template instantiation 'std::optional<int>::optional<WPARAM&,0>(_Ty2)' being compiled
+          with
+          [
+              _Ty2=WPARAM &
+          ]
   DXFramework.vcxproj -> E:\CG\Projects\DXFramework\DXFramework\x64\Debug\DXFramework.exe
