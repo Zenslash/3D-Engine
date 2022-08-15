@@ -56,6 +56,7 @@ Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>
 		6, 7, 5,	5,7,4,	//+
 		2, 6, 1,	1,6,5	//+
 	};
+	IndexBuffer* indexBuffer = new IndexBuffer(gfx, indices);
 	AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, indices));
 
 	struct ConstantBuffer2
@@ -65,17 +66,18 @@ Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>
 			float r;
 			float g;
 			float b;
+			float a;
 		}faceColors[6];
 	};
 	const ConstantBuffer2 cb2 =
 	{
 		{
-			{1.0f, 1.0f, 0.0f},
-			{0.0f, 1.0f, 1.0f},
-			{1.0f, 0.0f, 0.0f},
-			{1.0f, 1.0f, 1.0f},
-			{0.0f, 1.0f, 0.0f},
-			{0.0f, 0.0f, 1.0f},
+			{1.0f, 1.0f, 0.0f, 1.0f},
+			{0.0f, 1.0f, 1.0f, 1.0f},
+			{1.0f, 0.0f, 0.0f, 1.0f},
+			{1.0f, 1.0f, 1.0f, 1.0f},
+			{0.0f, 1.0f, 0.0f, 1.0f},
+			{0.0f, 0.0f, 1.0f, 1.0f},
 		}
 	};
 	AddBind(std::make_unique<PixelConstantBuffer<ConstantBuffer2>>(gfx, cb2));

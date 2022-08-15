@@ -12,7 +12,6 @@ public:
 		GFX_GET_INFO_MANAGER(gfx);
 
 		//Create vertex buffer
-		Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
 		D3D11_BUFFER_DESC vertexDesc = {};
 		vertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vertexDesc.Usage = D3D11_USAGE_DEFAULT;

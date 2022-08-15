@@ -10,9 +10,12 @@ void Drawable::Draw(Graphics& gfx) const noexcept(!IS_DEBUG)
 	gfx.DrawIndexed(pIndexBuffer->GetCount());
 }
 
+/*
+* Bind "bindable" to pipeline
+* Use AddIndexBuffer to bind index buffer
+*/
 void Drawable::AddBind(std::unique_ptr<Bindable> bind) noexcept(!IS_DEBUG)
 {
-	assert(("Must use IndexBuffer to bind index buffer", typeid(*bind) != typeid(IndexBuffer)));
 	binds.push_back(std::move(bind));
 }
 

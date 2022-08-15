@@ -96,6 +96,16 @@ Graphics::Graphics(HWND hWnd)
 
 	//Bind depth stencil view to OM
 	pContext->OMSetRenderTargets(1u, pRenderTarget.GetAddressOf(), pDepthStencilView.Get());
+
+	//Bound viewport
+	D3D11_VIEWPORT vp;
+	vp.Width = 800.0f;
+	vp.Height = 600.0f;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0.0f;
+	vp.TopLeftY = 0.0f;
+	pContext->RSSetViewports(1u, &vp);
 }
 
 void Graphics::RenderFrame()
