@@ -9,7 +9,7 @@ public:
 	TransformCbuf(Graphics& gfx, const Drawable& parent);
 	void Bind(Graphics& gfx) noexcept override;
 private:
-	VertexConstantBuffer<DirectX::XMMATRIX> transformBuffer;
+	static std::unique_ptr<VertexConstantBuffer<DirectX::XMMATRIX>> transformBuffer;
 	const Drawable& parent;
 };
 
