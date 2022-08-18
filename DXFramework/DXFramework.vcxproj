@@ -183,7 +183,9 @@
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableBase.h" />
     <ClInclude Include="Box.h" />
+    <ClInclude Include="Cone.h" />
     <ClInclude Include="ConstantBuffers.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="DrawableBase.h" />
     <ClInclude Include="dxerr.h" />
@@ -191,11 +193,15 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsMacro.h" />
     <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="InputLayout.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="PixelShader.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="Prism.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCbuf.h" />
@@ -205,6 +211,7 @@
     <ClInclude Include="WindowMacro.h" />
     <ClInclude Include="WinHeader.h" />
     <ClInclude Include="ZenException.h" />
+    <ClInclude Include="ZenMath.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DXFramework.rc" />
