@@ -1,7 +1,7 @@
 #include "App.h"
-#include "Box.h"
 #include <memory>
 
+#include "Sheet.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
 
@@ -16,13 +16,11 @@ App::App() : wnd(800, 600, "3D Framework")
 	std::uniform_real_distribution<float> rdist(6.0f, 20.0f);
 	for (auto i = 0; i < 80; i++)
 	{
-		boxes.push_back(std::make_unique<Box>(
+		boxes.push_back(std::make_unique<Sheet>(
 			wnd.GFX(), rng, adist,
 			ddist, odist, rdist
 			));
 	}
-
-	const auto testTex = Surface::FromFile("Test_Texture.jpg");
 
 	wnd.GFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 }

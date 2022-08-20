@@ -10,6 +10,12 @@
       <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\PixelShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\TexturePS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\TextureVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\VertexShader.cso</FullPath>
     </ContentFile>
   </ContentFiles>
