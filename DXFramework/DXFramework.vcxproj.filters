@@ -96,6 +96,12 @@
     <ClCompile Include="Box.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GDIPlusManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinHeader.h">
@@ -197,6 +203,12 @@
     <ClInclude Include="Prism.h">
       <Filter>Header Files\Primitives</Filter>
     </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GDIPlusManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DXFramework.rc">
@@ -205,6 +217,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="logo_2.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Test_Texture.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

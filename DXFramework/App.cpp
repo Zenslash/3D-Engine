@@ -2,6 +2,11 @@
 #include "Box.h"
 #include <memory>
 
+#include "Surface.h"
+#include "GDIPlusManager.h"
+
+GDIPlusManager gdpm;
+
 App::App() : wnd(800, 600, "3D Framework")
 {
 	std::mt19937 rng(std::random_device{}());
@@ -16,6 +21,9 @@ App::App() : wnd(800, 600, "3D Framework")
 			ddist, odist, rdist
 			));
 	}
+
+	const auto testTex = Surface::FromFile("Test_Texture.jpg");
+
 	wnd.GFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 }
 
