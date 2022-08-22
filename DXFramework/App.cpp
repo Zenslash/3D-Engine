@@ -1,7 +1,7 @@
 #include "App.h"
 #include <memory>
 
-#include "Sheet.h"
+#include "SkinnedBox.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
 
@@ -16,7 +16,7 @@ App::App() : wnd(800, 600, "3D Framework")
 	std::uniform_real_distribution<float> rdist(6.0f, 20.0f);
 	for (auto i = 0; i < 80; i++)
 	{
-		boxes.push_back(std::make_unique<Sheet>(
+		boxes.push_back(std::make_unique<SkinnedBox>(
 			wnd.GFX(), rng, adist,
 			ddist, odist, rdist
 			));
