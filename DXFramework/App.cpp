@@ -4,6 +4,9 @@
 #include "SkinnedBox.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_dx11.h"
+#include "imgui/imgui_impl_win32.h"
 
 GDIPlusManager gdpm;
 
@@ -53,5 +56,19 @@ void App::Tick()
 		b->Update(dt);
 		b->Draw(wnd.GFX());
 	}
+
+	//imgui
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	static bool isShowDemoWindow = true;
+	if (isShowDemoWindow)
+	{
+		ImGui::ShowDemoWindow(&isShowDemoWindow);
+	}
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
 	wnd.GFX().RenderFrame();
 }
