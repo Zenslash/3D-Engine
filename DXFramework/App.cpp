@@ -47,16 +47,7 @@ int App::Go()
 
 void App::Tick()
 {
-	auto dt = timer.Mark();
-
-	if (wnd.keyboard.IsKeyPressed(VK_SPACE))
-	{
-		wnd.GFX().DisableImGui();
-	}
-	else
-	{
-		wnd.GFX().EnableImGui();
-	}
+	auto dt = timer.Mark() * speedFactor;
 
 	wnd.GFX().BeginFrame(0.07f, 0.0f, 0.12f);
 	for (auto& b : boxes)
@@ -65,10 +56,13 @@ void App::Tick()
 		b->Draw(wnd.GFX());
 	}
 
-	if (isShowDemoWindow)
+	//imgui wnd to control simulation speed
+	if (ImGui::Begin("Simulation Speed"))
 	{
-		ImGui::ShowDemoWindow(&isShowDemoWindow);
+		ImGui::SliderFloat("Speed Factor", &speedFactor, 0.0f, 4.0f);
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
+	ImGui::End();
 
 	wnd.GFX().RenderFrame();
 }

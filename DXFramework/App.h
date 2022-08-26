@@ -14,6 +14,7 @@ private:
 	void Tick();
 private:
 	bool isShowDemoWindow = true;
+	float speedFactor = 1.0f;
 	ImguiManager imguiManager;
 	Window wnd;
 	Timer timer;
