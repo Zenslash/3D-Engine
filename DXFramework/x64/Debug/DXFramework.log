@@ -1,12 +1,4 @@
 ﻿  App.cpp
-  Box.cpp
-  Sheet.cpp
-  SkinnedBox.cpp
-E:\CG\Projects\DXFramework\DXFramework\DXFramework\Prism.h(28,11): warning C4834: discarding return value of function with 'nodiscard' attribute (compiling source file Box.cpp)
-E:\CG\Projects\DXFramework\DXFramework\DXFramework\Prism.h(90): message : see reference to function template instantiation 'IndexedTriangleList<Box::{ctor}::Vertex> Prism::MakeTesselated<V>(int)' being compiled
-          with
-          [
-              V=Box::{ctor}::Vertex
-          ] (compiling source file Box.cpp)
-E:\CG\Projects\DXFramework\DXFramework\DXFramework\Box.cpp(43): message : see reference to function template instantiation 'IndexedTriangleList<Box::{ctor}::Vertex> Prism::Make<Box::{ctor}::Vertex>(void)' being compiled
+  Camera.cpp
+  WinMain.cpp
   DXFramework.vcxproj -> E:\CG\Projects\DXFramework\DXFramework\x64\Debug\DXFramework.exe

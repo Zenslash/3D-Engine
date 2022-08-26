@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Timer.h"
 #include "ImguiManager.h"
+#include "Camera.h"
 
 class App
 {
@@ -15,6 +16,7 @@ private:
 private:
 	bool isShowDemoWindow = true;
 	float speedFactor = 1.0f;
+	Camera cam;
 	ImguiManager imguiManager;
 	Window wnd;
 	Timer timer;

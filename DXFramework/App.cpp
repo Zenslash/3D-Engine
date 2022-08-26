@@ -51,6 +51,7 @@ void App::Tick()
 	auto dt = timer.Mark() * speedFactor;
 
 	wnd.GFX().BeginFrame(0.07f, 0.0f, 0.12f);
+	wnd.GFX().SetCamera(cam.GetCameraMatrix());
 	for (auto& b : boxes)
 	{
 		b->Update(dt);
@@ -64,6 +65,9 @@ void App::Tick()
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 	ImGui::End();
+
+	//imgui camera control window
+	cam.SpawnControlWindow();
 
 	wnd.GFX().RenderFrame();
 }

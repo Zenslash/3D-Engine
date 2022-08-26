@@ -141,6 +141,9 @@
     <ClCompile Include="imgui\imgui_tables.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinHeader.h">
@@ -286,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
