@@ -61,6 +61,8 @@ public:
 	void BeginFrame(float r, float g, float b) noexcept;
 	void DrawIndexed(UINT indexCount) noexcept(!IS_DEBUG);
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
+	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
+	DirectX::XMMATRIX GetCamera() const noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
 	void EnableImGui() noexcept;
 	void DisableImGui() noexcept;
@@ -76,6 +78,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pRenderTarget;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDepthStencilView;
 
+	DirectX::XMMATRIX camMatrix;
 	DirectX::XMMATRIX projMatrix;
 };
 

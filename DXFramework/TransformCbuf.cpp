@@ -14,7 +14,7 @@ void TransformCbuf::Bind(Graphics& gfx) noexcept
 {
 	transformBuffer->Update(gfx,
 		DirectX::XMMatrixTranspose(
-			parent.GetTransformXM() * gfx.GetProjection()
+			parent.GetTransformXM() * gfx.GetCamera() * gfx.GetProjection()
 		));
 	transformBuffer->Bind(gfx);
 }
