@@ -13,6 +13,7 @@ public:
 private:
 	void Tick();
 private:
+	bool isShowDemoWindow = true;
 	ImguiManager imguiManager;
 	Window wnd;
 	Timer timer;

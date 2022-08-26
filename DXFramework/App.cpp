@@ -5,8 +5,6 @@
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"
-#include "imgui/imgui_impl_dx11.h"
-#include "imgui/imgui_impl_win32.h"
 
 GDIPlusManager gdpm;
 
@@ -50,25 +48,27 @@ int App::Go()
 void App::Tick()
 {
 	auto dt = timer.Mark();
-	wnd.GFX().ClearBuffer(0.07f, 0.0f, 0.12f);
+
+	if (wnd.keyboard.IsKeyPressed(VK_SPACE))
+	{
+		wnd.GFX().DisableImGui();
+	}
+	else
+	{
+		wnd.GFX().EnableImGui();
+	}
+
+	wnd.GFX().BeginFrame(0.07f, 0.0f, 0.12f);
 	for (auto& b : boxes)
 	{
 		b->Update(dt);
 		b->Draw(wnd.GFX());
 	}
 
-	//imgui
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
-	static bool isShowDemoWindow = true;
 	if (isShowDemoWindow)
 	{
 		ImGui::ShowDemoWindow(&isShowDemoWindow);
 	}
-	ImGui::Render();
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	wnd.GFX().RenderFrame();
 }
