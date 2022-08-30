@@ -1,7 +1,7 @@
 #include "App.h"
 #include <memory>
 
-#include "SkinnedBox.h"
+#include "Box.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"
@@ -17,7 +17,7 @@ App::App() : wnd(800, 600, "3D Framework")
 	std::uniform_real_distribution<float> rdist(6.0f, 20.0f);
 	for (auto i = 0; i < 80; i++)
 	{
-		boxes.push_back(std::make_unique<SkinnedBox>(
+		boxes.push_back(std::make_unique<Box>(
 			wnd.GFX(), rng, adist,
 			ddist, odist, rdist
 			));
@@ -25,11 +25,13 @@ App::App() : wnd(800, 600, "3D Framework")
 
 	wnd.GFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	wnd.GFX().SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
+
+	plight = std::make_unique<PointLight>(wnd.GFX());
 }
 
 App::~App()
 {
-
+	plight.release();
 }
 
 int App::Go()
@@ -52,11 +54,13 @@ void App::Tick()
 
 	wnd.GFX().BeginFrame(0.07f, 0.0f, 0.12f);
 	wnd.GFX().SetCamera(cam.GetCameraMatrix());
+	plight->Bind(wnd.GFX());
 	for (auto& b : boxes)
 	{
 		b->Update(dt);
 		b->Draw(wnd.GFX());
 	}
+	plight->Draw(wnd.GFX());
 
 	//imgui wnd to control simulation speed
 	if (ImGui::Begin("Simulation Speed"))
@@ -68,6 +72,8 @@ void App::Tick()
 
 	//imgui camera control window
 	cam.SpawnControlWindow();
+	//point light control window
+	plight->SpawnControlWindow();
 
 	wnd.GFX().RenderFrame();
 }

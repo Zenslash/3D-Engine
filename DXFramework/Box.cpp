@@ -26,67 +26,32 @@ Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>
 		struct Vertex
 		{
 			DirectX::XMFLOAT3 pos;
+			DirectX::XMFLOAT3 n;
 		};
 
-		//Create vertex array
-		//const std::vector<Vertex> vertices =
-		//{
-		//	{-1.0f, -1.0f, -1.0f},	//bottom left corner
-		//	{-1.0f, -1.0f, 1.0f},		//bottom upper left corner
-		//	{1.0f, -1.0f, 1.0f},		//bottom upper right corner
-		//	{1.0f, -1.0f, -1.0f},		//bottom right corner
-		//	{-1.0f, 1.0f, -1.0f},		//upper left corner
-		//	{-1.0f, 1.0f, 1.0f},		//upper upper left corner
-		//	{1.0f, 1.0f, 1.0f},		//upper upper right corner
-		//	{1.0f, 1.0f, -1.0f},		//upper right corner
-		//};
-		IndexedTriangleList<Vertex> sphere = Prism::Make<Vertex>();
-		AddStaticBind(std::make_unique<VertexBuffer>(gfx, sphere.vertices));
+		IndexedTriangleList<Vertex> model = Cube::MakeIndependent<Vertex>();
+		model.SetNormalsIndependentFlat();
 
-		auto pVertexShader = std::make_unique<VertexShader>(gfx, L"VertexShader.cso");
+		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
+
+		auto pVertexShader = std::make_unique<VertexShader>(gfx, L"PhongVS.cso");
 		auto pVertexBytecode = pVertexShader->GetBytecode();
 		AddStaticBind(std::move(pVertexShader));
 
-		AddStaticBind(std::make_unique<PixelShader>(gfx, L"PixelShader.cso"));
+		AddStaticBind(std::make_unique<PixelShader>(gfx, L"PhongPS.cso"));
 
-		//Create index buffer
-		//const std::vector<unsigned short> indices =
-		//{
-		//	3, 1, 0,	2,1,3,	//+
-		//	0, 1, 4,	1,5,4,	//+
-		//	0, 4, 3,	3,4,7,	//+
-		//	2, 3, 7,	7,6,2,	//+
-		//	6, 7, 5,	5,7,4,	//+
-		//	2, 6, 1,	1,6,5	//+
-		//};
-		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, sphere.indices));
+		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
 
-		struct ConstantBuffer2
+		struct PSLightConstants
 		{
-			struct
-			{
-				float r;
-				float g;
-				float b;
-				float a;
-			}faceColors[6];
+			DirectX::XMVECTOR pos;
 		};
-		const ConstantBuffer2 cb2 =
-		{
-			{
-				{1.0f, 1.0f, 0.0f, 1.0f},
-				{0.0f, 1.0f, 1.0f, 1.0f},
-				{1.0f, 0.0f, 0.0f, 1.0f},
-				{1.0f, 1.0f, 1.0f, 1.0f},
-				{0.0f, 1.0f, 0.0f, 1.0f},
-				{0.0f, 0.0f, 1.0f, 1.0f},
-			}
-		};
-		AddStaticBind(std::make_unique<PixelConstantBuffer<ConstantBuffer2>>(gfx, cb2));
+		AddStaticBind(std::make_unique<PixelConstantBuffer<PSLightConstants>>(gfx));
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 		AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pVertexBytecode));
 

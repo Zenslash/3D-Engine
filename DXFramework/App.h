@@ -3,6 +3,8 @@
 #include "Timer.h"
 #include "ImguiManager.h"
 #include "Camera.h"
+#include "PointLight.h"
+#include <memory>
 
 class App
 {
@@ -17,6 +19,7 @@ private:
 	bool isShowDemoWindow = true;
 	float speedFactor = 1.0f;
 	Camera cam;
+	std::unique_ptr<PointLight> plight = nullptr;
 	ImguiManager imguiManager;
 	Window wnd;
 	Timer timer;

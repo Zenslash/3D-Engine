@@ -7,7 +7,19 @@
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\PhongPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\PhongVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\PixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\SolidPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\SolidVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\TexturePS.cso</FullPath>
