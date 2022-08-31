@@ -42,12 +42,6 @@ Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>
 
 		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
 
-		struct PSLightConstants
-		{
-			DirectX::XMVECTOR pos;
-		};
-		AddStaticBind(std::make_unique<PixelConstantBuffer<PSLightConstants>>(gfx));
-
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
