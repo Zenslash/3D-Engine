@@ -9,12 +9,24 @@ PointLight::PointLight(Graphics& gfx, float radius)
 
 void PointLight::SpawnControlWindow() noexcept
 {
-	if (ImGui::Begin("Pnt Light"))
+	if (ImGui::Begin("Point Light"))
 	{
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &constantBufferData.pos.x, -60.0f, 60.0f, "%.1f");
 		ImGui::SliderFloat("Y", &constantBufferData.pos.y, -60.0f, 60.0f, "%.1f");
 		ImGui::SliderFloat("Z", &constantBufferData.pos.z, -60.0f, 60.0f, "%.1f");
+
+		ImGui::Text("Color");
+		ImGui::SliderFloat("Intensity", &constantBufferData.diffuseIntentisy, 0.0f, 10.0f, "%.1f");
+		ImGui::ColorEdit3("Material Color", &constantBufferData.materialColor.x);
+		ImGui::ColorEdit3("Diffuse Color", &constantBufferData.diffuseColor.x);
+		ImGui::ColorEdit3("Ambient Color", &constantBufferData.ambientColor.x);
+
+		ImGui::Text("Attenuation");
+		ImGui::SliderFloat("AttConst", &constantBufferData.attConst, 0.0f, 5.0f, "%.1f");
+		ImGui::SliderFloat("AttLin", &constantBufferData.attLin, 0.0f, 5.0f, "%.1f");
+		ImGui::SliderFloat("AttQuad", &constantBufferData.attQuad, 0.0f, 5.0f, "%.1f");
+
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
