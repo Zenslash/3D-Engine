@@ -9,7 +9,8 @@
 Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>& adist,
 	std::uniform_real_distribution<float>& ddist,
 	std::uniform_real_distribution<float>& odist,
-	std::uniform_real_distribution<float>& rdist) :
+	std::uniform_real_distribution<float>& rdist,
+	DirectX::XMFLOAT3 material) :
 	r(rdist(rng)),
 	droll(ddist(rng)),
 	dpitch(ddist(rng)),
@@ -56,6 +57,13 @@ Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>
 		SetIndexFromStatic();
 	}
 	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
+
+	struct PSConstantBuffer
+	{
+		alignas(16) DirectX::XMFLOAT3 color;
+	} colorConst;
+	colorConst.color = material;
+	AddBind(std::make_unique<PixelConstantBuffer<PSConstantBuffer>>(gfx, colorConst, 1u));
 }
 
 void Box::Update(float delta) noexcept

@@ -18,7 +18,6 @@ void PointLight::SpawnControlWindow() noexcept
 
 		ImGui::Text("Color");
 		ImGui::SliderFloat("Intensity", &constantBufferData.diffuseIntentisy, 0.0f, 10.0f, "%.1f");
-		ImGui::ColorEdit3("Material Color", &constantBufferData.materialColor.x);
 		ImGui::ColorEdit3("Diffuse Color", &constantBufferData.diffuseColor.x);
 		ImGui::ColorEdit3("Ambient Color", &constantBufferData.ambientColor.x);
 
@@ -40,7 +39,6 @@ void PointLight::Reset() noexcept
 	constantBufferData = 
 	{
 		{0.0f, 0.0f, 0.0f},
-		{0.5f, 0.5f, 0.9f},
 		{0.2f, 0.2f, 0.2f},
 		{1.0f, 1.0f, 1.0f},
 		1.0f,
