@@ -55,7 +55,7 @@ void App::Tick()
 
 	wnd.GFX().BeginFrame(0.07f, 0.0f, 0.12f);
 	wnd.GFX().SetCamera(cam.GetCameraMatrix());
-	plight->Bind(wnd.GFX());
+	plight->Bind(wnd.GFX(), cam.GetCameraMatrix());
 	for (auto& b : boxes)
 	{
 		b->Update(dt);

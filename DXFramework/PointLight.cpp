@@ -54,8 +54,12 @@ void PointLight::Draw(Graphics& gfx) const noexcept(!IS_DEBUG)
 	mesh.Draw(gfx);
 }
 
-void PointLight::Bind(Graphics& gfx) const noexcept
+void PointLight::Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept
 {
-	constantBuffer.Update(gfx, constantBufferData);
+	auto data = constantBufferData;
+	const auto pos = DirectX::XMLoadFloat3(&constantBufferData.pos);
+	DirectX::XMStoreFloat3(&data.pos, DirectX::XMVector3Transform(pos, view));
+
+	constantBuffer.Update(gfx, data);
 	constantBuffer.Bind(gfx);
 }
