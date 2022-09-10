@@ -11,16 +11,7 @@ Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>
 	std::uniform_real_distribution<float>& odist,
 	std::uniform_real_distribution<float>& rdist,
 	DirectX::XMFLOAT3 material) :
-	r(rdist(rng)),
-	droll(ddist(rng)),
-	dpitch(ddist(rng)),
-	dyaw(ddist(rng)),
-	dphi(odist(rng)),
-	dtheta(odist(rng)),
-	dchi(odist(rng)),
-	chi(adist(rng)),
-	theta(adist(rng)),
-	phi(adist(rng))
+	TestObject(gfx, rng, adist, ddist, odist, rdist)
 {
 	if (!IsStaticBindsInitialized())
 	{
@@ -67,21 +58,4 @@ Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>
 	} colorConst;
 	colorConst.color = material;
 	AddBind(std::make_unique<PixelConstantBuffer<PSConstantBuffer>>(gfx, colorConst, 1u));
-}
-
-void Box::Update(float delta) noexcept
-{
-	roll += droll * delta;
-	yaw += dyaw * delta;
-	pitch += dpitch * delta;
-	theta += dtheta * delta;
-	chi += dchi * delta;
-	phi += dphi * delta;
-}
-
-DirectX::XMMATRIX Box::GetTransformXM() const noexcept
-{
-	return DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
-		DirectX::XMMatrixTranslation(r, 0.0f, 0.0f) *
-		DirectX::XMMatrixRotationRollPitchYaw(theta, phi, chi);
 }
