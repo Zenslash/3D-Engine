@@ -85,6 +85,112 @@ public:
 	}
 
 	template<class V>
+	static IndexedTriangleList<V> MakeTesselatedIndependentCapNormals(int longDiv)
+	{
+		assert(longDiv >= 3);
+
+		const auto base = DirectX::XMVectorSet(1.0f, 0.0f, -1.0f, 0.0f);
+		const auto offset = DirectX::XMVectorSet(0.0f, 0.0f, 2.0f, 0.0f);
+		const float longitudeAngle = 2.0f * PI / longDiv;
+
+		std::vector<V> vertices;
+
+		const unsigned short centerNear = 0u;
+		vertices.emplace_back();
+		vertices.back().pos = { 0.0f, 0.0f, -1.0f };
+		vertices.back().n = { 0.0f, 0.0f, -1.0f };
+
+		//bottom vertices
+		const unsigned short baseNear = 1;
+		for (int i = 0; i < longDiv; i++)
+		{
+			vertices.emplace_back();
+			auto v = DirectX::XMVector3Transform
+			(
+				base,
+				DirectX::XMMatrixRotationZ(longitudeAngle * i)
+			);
+			DirectX::XMStoreFloat3(&vertices.back().pos, v);
+			vertices.back().n = { 0.0f, 0.0f,-1.0f };
+		}
+
+		const auto centerFar = (unsigned short)vertices.size();
+		vertices.emplace_back();
+		vertices.back().pos = { 0.0f, 0.0f, 1.0f };
+		vertices.back().n = { 0.0f, 0.0f, 1.0f };
+		//upper vertices
+		const auto baseFar = (unsigned short)vertices.size();
+		for (int i = 0; i < longDiv; i++)
+		{
+			vertices.emplace_back();
+			auto v = DirectX::XMVector3Transform
+			(
+				base,
+				DirectX::XMMatrixRotationZ(longitudeAngle * i)
+			);
+			v = DirectX::XMVectorAdd(v, offset);
+			DirectX::XMStoreFloat3(&vertices.back().pos, v);
+			vertices.back().n = { 0.0f, 0.0f, 1.0f };
+		}
+
+		const auto body = (unsigned short)vertices.size();
+		for (int i = 0; i < longDiv; i++)
+		{
+			{
+				vertices.emplace_back();
+				auto v = DirectX::XMVector3Transform
+				(
+					base, DirectX::XMMatrixRotationZ(longitudeAngle * i)
+				);
+				DirectX::XMStoreFloat3(&vertices.back().pos, v);
+				vertices.back().n = { vertices.back().pos.x, vertices.back().pos.y, 0.0f };
+			}
+			{
+				vertices.emplace_back();
+				auto v = DirectX::XMVector3Transform
+				(
+					base, DirectX::XMMatrixRotationZ(longitudeAngle * i)
+				);
+				v = DirectX::XMVectorAdd(v, offset);
+				DirectX::XMStoreFloat3(&vertices.back().pos, v);
+				vertices.back().n = { vertices.back().pos.x, vertices.back().pos.y, 0.0f };
+			}
+		}
+
+		std::vector<unsigned short> indices;
+
+		//bottom triangles
+		const auto mod = longDiv * 2;
+		for (unsigned short i = 0; i < longDiv; i++)
+		{
+			indices.push_back(i + baseNear);
+			indices.push_back(centerNear);
+			indices.push_back((i + 1) % longDiv + baseNear);
+		}
+
+		//upper triangles - Error
+		for (unsigned short i = 0; i < longDiv; i++)
+		{
+			indices.push_back(centerFar);
+			indices.push_back(i + baseFar);
+			indices.push_back((i + 1) % longDiv + baseFar);
+		}
+		//side triangles - OK
+		for (unsigned short i = 0; i < longDiv; i++)
+		{
+			const auto index = i * 2;
+			indices.push_back(index + body);
+			indices.push_back((index + 2) % mod + body);
+			indices.push_back(index + 1 + body);
+			indices.push_back((index + 2) % mod + body);
+			indices.push_back((index + 3) % mod + body);
+			indices.push_back(index + 1 + body);
+		}
+
+		return { std::move(vertices), std::move(indices) };
+	}
+
+	template<class V>
 	static IndexedTriangleList<V> Make()
 	{
 		return MakeTesselated<V>(24);

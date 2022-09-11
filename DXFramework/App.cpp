@@ -1,6 +1,7 @@
 #include "App.h"
 #include <memory>
 
+#include "Cylinder.h"
 #include "Box.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
@@ -16,12 +17,17 @@ App::App() : wnd(800, 600, "3D Framework")
 	std::uniform_real_distribution<float> odist(0.0f, 3.1415f * 0.3f);
 	std::uniform_real_distribution<float> rdist(6.0f, 20.0f);
 	std::uniform_real_distribution<float> cdist(0.0f, 1.0f);
+	std::uniform_int_distribution<int> sdist{ 0,1 };
+	std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
+	std::uniform_int_distribution<int> tdist{ 3,30 };
 	for (auto i = 0; i < 80; i++)
 	{
-		boxes.push_back(std::make_unique<Box>(
-			wnd.GFX(), rng, adist,
-			ddist, odist, rdist, DirectX::XMFLOAT3(cdist(rng), cdist(rng), cdist(rng))
-			));
+		/*boxes.push_back(std::make_unique<Box>(
+			wnd.GFX(), rng, adist, ddist, odist,
+			rdist, DirectX::XMFLOAT3{1.0f, 0.0f, 1.0f}));*/
+		boxes.push_back(std::make_unique<Cylinder>(
+			wnd.GFX(), rng, adist, ddist, odist,
+			rdist, bdist, tdist));
 	}
 
 	wnd.GFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));

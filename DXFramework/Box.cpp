@@ -21,8 +21,8 @@ Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>
 			DirectX::XMFLOAT3 n;
 		};
 
-		IndexedTriangleList<Vertex> model = Cube::MakeIndependent<Vertex>();
-		model.SetNormalsIndependentFlat();
+		IndexedTriangleList<Vertex> model = Prism::MakeTesselatedIndependentCapNormals<Vertex>(7);
+		//model.SetNormalsIndependentFlat();
 
 		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 

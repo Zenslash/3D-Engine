@@ -32,7 +32,7 @@ float4 main(float3 cameraPos : POSITION, float3 n : NORMAL) : SV_TARGET
     
     //specular
     const float r = reflect(vToL, n);
-    const float3 specular = (diffuseColor * diffuseIntensity) * specularIntensity
+    const float3 specular = attenuation * (diffuseColor * diffuseIntensity) * specularIntensity
     * pow(max(0.0f, dot(normalize(-r), normalize(cameraPos))), specularPower);
     
 	return float4(saturate(diffuse + ambient + specular) * materialColor, 1.0f);
