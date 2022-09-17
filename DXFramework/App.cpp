@@ -2,6 +2,7 @@
 #include <memory>
 #include "Pyramid.h"
 #include "Box.h"
+#include "SkinnedBox.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"
@@ -21,12 +22,12 @@ App::App() : wnd(800, 600, "3D Framework")
 	std::uniform_int_distribution<int> tdist{ 3,30 };
 	for (auto i = 0; i < 80; i++)
 	{
-		/*boxes.push_back(std::make_unique<Box>(
+		boxes.push_back(std::make_unique<SkinnedBox>(
 			wnd.GFX(), rng, adist, ddist, odist,
-			rdist, DirectX::XMFLOAT3{1.0f, 0.0f, 1.0f}));*/
-		boxes.push_back(std::make_unique<Pyramid>(
+			rdist));
+		/*boxes.push_back(std::make_unique<SkinnedBox>(
 			wnd.GFX(), rng, adist, ddist, odist,
-			rdist, tdist));
+			rdist, tdist));*/
 	}
 
 	wnd.GFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));

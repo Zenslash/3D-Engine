@@ -85,6 +85,39 @@ public:
 	}
 
 	template<class V>
+	static IndexedTriangleList<V> MakeIndependentTextured()
+	{
+		auto model = MakeIndependent<V>();
+
+		model.vertices[0].texCrd = { 0.0f,0.0f };
+		model.vertices[1].texCrd = { 1.0f,0.0f };
+		model.vertices[2].texCrd = { 0.0f,1.0f };
+		model.vertices[3].texCrd = { 1.0f,1.0f };
+		model.vertices[4].texCrd = { 0.0f,0.0f };
+		model.vertices[5].texCrd = { 1.0f,0.0f };
+		model.vertices[6].texCrd = { 0.0f,1.0f };
+		model.vertices[7].texCrd = { 1.0f,1.0f };
+		model.vertices[8].texCrd = { 0.0f,0.0f };
+		model.vertices[9].texCrd = { 1.0f,0.0f };
+		model.vertices[10].texCrd = { 0.0f,1.0f };
+		model.vertices[11].texCrd = { 1.0f,1.0f };
+		model.vertices[12].texCrd = { 0.0f,0.0f };
+		model.vertices[13].texCrd = { 1.0f,0.0f };
+		model.vertices[14].texCrd = { 0.0f,1.0f };
+		model.vertices[15].texCrd = { 1.0f,1.0f };
+		model.vertices[16].texCrd = { 0.0f,0.0f };
+		model.vertices[17].texCrd = { 1.0f,0.0f };
+		model.vertices[18].texCrd = { 0.0f,1.0f };
+		model.vertices[19].texCrd = { 1.0f,1.0f };
+		model.vertices[20].texCrd = { 0.0f,0.0f };
+		model.vertices[21].texCrd = { 1.0f,0.0f };
+		model.vertices[22].texCrd = { 0.0f,1.0f };
+		model.vertices[23].texCrd = { 1.0f,1.0f };
+
+		return model;
+	}
+
+	template<class V>
 	static IndexedTriangleList<V> MakeIndependent()
 	{
 		const float side = 0.5f;
