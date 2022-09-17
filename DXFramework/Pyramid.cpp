@@ -21,12 +21,16 @@ Pyramid::Pyramid(Graphics& gfx, std::mt19937& rng,
 			std::array<char, 4> color;
 			char padding;
 		};
-		auto model = Cone::MakeTesselatedIndependentFaces<Vertex>(7);
+		const auto tesselation = tdist(rng);
+		auto model = Cone::MakeTesselatedIndependentFaces<Vertex>(tesselation);
 		for (auto& v : model.vertices)
 		{
-			v.color = { (char)40, (char)255, (char)255 };
+			v.color = { (char)10, (char)10, (char)255 };
 		}
-		model.vertices.front().color = { (char)255, (char)20, (char)20 };
+		for (int i = 0; i < tesselation; i++)
+		{
+			model.vertices[i * 3].color = { (char)255, (char)20, (char)20 };
+		}
 		model.Transform(DirectX::XMMatrixScaling(1.0f, 1.0f, 0.7f));
 		model.SetNormalsIndependentFlat();
 
