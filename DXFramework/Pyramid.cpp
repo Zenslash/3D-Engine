@@ -52,6 +52,14 @@ Pyramid::Pyramid(Graphics& gfx, std::mt19937& rng,
 		AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pVertexShaderBytecode));
 
 		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+
+		struct PSMaterialConstant
+		{
+			float specularIntensity = 0.6f;
+			float specularPower = 30.0f;
+			float padding[2];
+		} colorCB;
+		AddStaticBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorCB, 1u));
 	}
 	else
 	{
