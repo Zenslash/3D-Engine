@@ -14,29 +14,6 @@ Pyramid::Pyramid(Graphics& gfx, std::mt19937& rng,
 {
 	if (!IsStaticBindsInitialized())
 	{
-		struct Vertex
-		{
-			DirectX::XMFLOAT3 pos;
-			DirectX::XMFLOAT3 n;
-			std::array<char, 4> color;
-			char padding;
-		};
-		const auto tesselation = tdist(rng);
-		auto model = Cone::MakeTesselatedIndependentFaces<Vertex>(tesselation);
-		for (auto& v : model.vertices)
-		{
-			v.color = { (char)10, (char)10, (char)255 };
-		}
-		for (int i = 0; i < tesselation; i++)
-		{
-			model.vertices[i * 3].color = { (char)255, (char)20, (char)20 };
-		}
-		model.Transform(DirectX::XMMatrixScaling(1.0f, 1.0f, 0.7f));
-		model.SetNormalsIndependentFlat();
-
-		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
-		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
-
 		auto pVertexShader = std::make_unique<VertexShader>(gfx, L"BlendedPhongVS.cso");
 		auto pVertexShaderBytecode = pVertexShader->GetBytecode();
 		AddStaticBind(std::move(pVertexShader));
@@ -61,10 +38,29 @@ Pyramid::Pyramid(Graphics& gfx, std::mt19937& rng,
 		} colorCB;
 		AddStaticBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorCB, 1u));
 	}
-	else
+
+	struct Vertex
 	{
-		SetIndexFromStatic();
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT3 n;
+		std::array<char, 4> color;
+		char padding;
+	};
+	const auto tesselation = tdist(rng);
+	auto model = Cone::MakeTesselatedIndependentFaces<Vertex>(tesselation);
+	for (auto& v : model.vertices)
+	{
+		v.color = { (char)10, (char)10, (char)255 };
 	}
+	for (int i = 0; i < tesselation; i++)
+	{
+		model.vertices[i * 3].color = { (char)255, (char)20, (char)20 };
+	}
+	model.Transform(DirectX::XMMatrixScaling(1.0f, 1.0f, 0.7f));
+	model.SetNormalsIndependentFlat();
+
+	AddBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
+	AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
 
 	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
 }
