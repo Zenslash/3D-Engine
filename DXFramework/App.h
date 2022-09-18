@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "PointLight.h"
 #include <memory>
+#include <set>
 
 class App
 {
@@ -25,5 +26,7 @@ private:
 	Timer timer;
 	std::vector<std::unique_ptr<class Drawable>> drawables;
 	std::vector<class Box*> boxes;
+	std::optional<int> comboBoxIndex;
+	std::set<int> boxControlIds;
 };
 

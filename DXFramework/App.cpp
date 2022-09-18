@@ -90,8 +90,43 @@ void App::Tick()
 	cam.SpawnControlWindow();
 	//point light control window
 	plight->SpawnControlWindow();
-	//Control window for box
-	boxes.front()->SpawnControlWindow(69, wnd.GFX());
+	//Control window for boxes
+	if (ImGui::Begin("Boxes"))
+	{
+		using namespace std::string_literals;
+		const auto preview = comboBoxIndex ? std::to_string(*comboBoxIndex) : "Choose a box...";
+		if (ImGui::BeginCombo("Box Number", preview.c_str()))
+		{
+			for (int i = 0; i < boxes.size(); i++)
+			{
+				bool selected = false;
+				if (comboBoxIndex)
+				{
+					selected = *comboBoxIndex == i;
+				}
+				
+				if (ImGui::Selectable(std::to_string(i).c_str(), selected))
+				{
+					comboBoxIndex = i;
+				}
+				if (selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+		if (ImGui::Button("Spawn Control Window") && comboBoxIndex)
+		{
+			boxControlIds.insert(*comboBoxIndex);
+			comboBoxIndex.reset();
+		}
+	}
+	ImGui::End();
+	for (auto id : boxControlIds)
+	{
+		boxes[id]->SpawnControlWindow(id, wnd.GFX());
+	}
 
 	wnd.GFX().RenderFrame();
 }
