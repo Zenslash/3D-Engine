@@ -17,6 +17,19 @@ public:
 	void Draw(Graphics& gfx) const noexcept(!IS_DEBUG);
 	virtual void Update(float delta) noexcept = 0;
 protected:
+	template<class T>
+	T* QueryBindable() noexcept
+	{
+		for (auto& b : binds)
+		{
+			if (auto pt = dynamic_cast<T*>(b.get()))
+			{
+				return pt;
+			}
+		}
+		return nullptr;
+	}
+
 	void AddBind(std::unique_ptr<Bindable> bind) noexcept(!IS_DEBUG);
 	void AddIndexBuffer(std::unique_ptr<class IndexBuffer> indexBuffer) noexcept(!IS_DEBUG);
 private:

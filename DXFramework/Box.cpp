@@ -5,6 +5,7 @@
 #include "Cube.h"
 #include "Plane.h"
 #include "Prism.h"
+#include "imgui/imgui.h"
 
 Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>& adist,
 	std::uniform_real_distribution<float>& ddist,
@@ -49,13 +50,32 @@ Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>
 	}
 	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
 
-	struct PSConstantBuffer
+	materialConstants.color = material;
+	AddBind(std::make_unique<MaterialCBuffer>(gfx, materialConstants, 1u));
+}
+
+void Box::SpawnControlWindow(int id, Graphics& gfx) noexcept
+{
+	using namespace std::string_literals;
+
+	bool dirty = false;
+	if (ImGui::Begin(("Box "s + std::to_string(id)).c_str()))
 	{
-		alignas(16) DirectX::XMFLOAT3 color;
-		float specularIntensity = 0.6f;
-		float specularPower = 30.0f;
-		float padding[2];
-	} colorConst;
-	colorConst.color = material;
-	AddBind(std::make_unique<PixelConstantBuffer<PSConstantBuffer>>(gfx, colorConst, 1u));
+		dirty = dirty || ImGui::ColorEdit3("Material Color", &materialConstants.color.x);
+		dirty = dirty || ImGui::SliderFloat("Specular Intensity", &materialConstants.specularIntensity, 0.05f, 4.0f, "%.2f");
+		dirty = dirty || ImGui::SliderFloat("Specular Power", &materialConstants.specularPower, 1.0f, 200.0f, "%.2f");
+	}
+	ImGui::End();
+
+	if (dirty)
+	{
+		SyncMaterial(gfx);
+	}
+}
+
+void Box::SyncMaterial(Graphics& gfx) noexcept(!IS_DEBUG)
+{
+	auto cbuf = QueryBindable<MaterialCBuffer>();
+	assert(cbuf != nullptr);
+	cbuf->Update(gfx, materialConstants);
 }

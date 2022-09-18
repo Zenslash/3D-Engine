@@ -2,6 +2,7 @@
 #include "DrawableBase.h"
 #include <random>
 #include "TestObject.h"
+#include "ConstantBuffers.h"
 
 class Box : public TestObject<Box>
 {
@@ -12,6 +13,18 @@ public:
 		std::uniform_real_distribution<float>& odist,
 		std::uniform_real_distribution<float>& rdist,
 		DirectX::XMFLOAT3 material);
+	void SpawnControlWindow(int id, Graphics& gfx) noexcept;
+private:
+	void SyncMaterial(Graphics& gfx) noexcept(!IS_DEBUG);
+private:
+	struct PSMaterialConstant
+	{
+		DirectX::XMFLOAT3 color;
+		float specularIntensity = 0.6f;
+		float specularPower = 30.0f;
+		float padding[3];
+	} materialConstants;
+	using MaterialCBuffer = PixelConstantBuffer<PSMaterialConstant>;
 private:
 	DirectX::XMFLOAT3X3 modelTransform;
 };

@@ -20,14 +20,23 @@ App::App() : wnd(800, 600, "3D Framework")
 	std::uniform_int_distribution<int> sdist{ 0,2 };
 	std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
 	std::uniform_int_distribution<int> tdist{ 3,30 };
+
+	const DirectX::XMFLOAT3 mat = { cdist(rng),cdist(rng),cdist(rng) };
 	for (auto i = 0; i < 80; i++)
 	{
-		boxes.push_back(std::make_unique<SkinnedBox>(
+		/*drawables.push_back(std::make_unique<SkinnedBox>(
 			wnd.GFX(), rng, adist, ddist, odist,
-			rdist));
-		/*boxes.push_back(std::make_unique<SkinnedBox>(
-			wnd.GFX(), rng, adist, ddist, odist,
-			rdist, tdist));*/
+			rdist));*/
+		drawables.push_back(std::make_unique<Box>(
+			wnd.GFX(), rng, adist, ddist,
+			odist, rdist, mat));
+	}
+	for (auto& d : drawables)
+	{
+		if (auto pt = dynamic_cast<Box*>(d.get()))
+		{
+			boxes.push_back(pt);
+		}
 	}
 
 	wnd.GFX().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
@@ -62,7 +71,7 @@ void App::Tick()
 	wnd.GFX().BeginFrame(0.07f, 0.0f, 0.12f);
 	wnd.GFX().SetCamera(cam.GetCameraMatrix());
 	plight->Bind(wnd.GFX(), cam.GetCameraMatrix());
-	for (auto& b : boxes)
+	for (auto& b : drawables)
 	{
 		b->Update(dt);
 		b->Draw(wnd.GFX());
@@ -81,6 +90,8 @@ void App::Tick()
 	cam.SpawnControlWindow();
 	//point light control window
 	plight->SpawnControlWindow();
+	//Control window for box
+	boxes.front()->SpawnControlWindow(69, wnd.GFX());
 
 	wnd.GFX().RenderFrame();
 }

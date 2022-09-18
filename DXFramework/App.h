@@ -23,6 +23,7 @@ private:
 	ImguiManager imguiManager;
 	Window wnd;
 	Timer timer;
-	std::vector<std::unique_ptr<class Drawable>> boxes;
+	std::vector<std::unique_ptr<class Drawable>> drawables;
+	std::vector<class Box*> boxes;
 };
 
