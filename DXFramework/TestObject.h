@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DrawableBase.h"
+#include "ZenMath.h"
 
 template<class T>
 class TestObject : public DrawableBase<T>
@@ -25,12 +26,12 @@ public:
 	{}
 	void Update(float delta) noexcept
 	{
-		roll += droll * delta;
-		yaw += dyaw * delta;
-		pitch += dpitch * delta;
-		theta += dtheta * delta;
-		chi += dchi * delta;
-		phi += dphi * delta;
+		roll = WrapAngle(roll + droll * delta);
+		yaw = WrapAngle(yaw + dyaw * delta);
+		pitch = WrapAngle(pitch + dpitch * delta);
+		theta = WrapAngle(theta + dtheta * delta);
+		chi = WrapAngle(chi + dchi * delta);
+		phi = WrapAngle(phi + dphi * delta);
 	}
 	DirectX::XMMATRIX GetTransformXM() const noexcept
 	{
