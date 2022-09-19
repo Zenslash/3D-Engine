@@ -78,6 +78,17 @@ void App::Tick()
 	}
 	plight->Draw(wnd.GFX());
 
+	SpawnTimeWindow();
+	cam.SpawnControlWindow();
+	plight->SpawnControlWindow();
+	SpawnBoxWindowManagerWindow();
+	SpawnBoxWindows();
+
+	wnd.GFX().RenderFrame();
+}
+
+void App::SpawnTimeWindow() noexcept
+{
 	//imgui wnd to control simulation speed
 	if (ImGui::Begin("Simulation Speed"))
 	{
@@ -85,11 +96,10 @@ void App::Tick()
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 	ImGui::End();
+}
 
-	//imgui camera control window
-	cam.SpawnControlWindow();
-	//point light control window
-	plight->SpawnControlWindow();
+void App::SpawnBoxWindowManagerWindow() noexcept
+{
 	//Control window for boxes
 	if (ImGui::Begin("Boxes"))
 	{
@@ -104,7 +114,7 @@ void App::Tick()
 				{
 					selected = *comboBoxIndex == i;
 				}
-				
+
 				if (ImGui::Selectable(std::to_string(i).c_str(), selected))
 				{
 					comboBoxIndex = i;
@@ -123,10 +133,12 @@ void App::Tick()
 		}
 	}
 	ImGui::End();
+}
+
+void App::SpawnBoxWindows() noexcept
+{
 	for (auto id : boxControlIds)
 	{
 		boxes[id]->SpawnControlWindow(id, wnd.GFX());
 	}
-
-	wnd.GFX().RenderFrame();
 }

@@ -16,6 +16,9 @@ public:
 	int Go();
 private:
 	void Tick();
+	void SpawnTimeWindow() noexcept;
+	void SpawnBoxWindowManagerWindow() noexcept;
+	void SpawnBoxWindows() noexcept;
 private:
 	bool isShowDemoWindow = true;
 	float speedFactor = 1.0f;
