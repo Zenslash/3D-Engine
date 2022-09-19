@@ -13,7 +13,7 @@ public:
 		std::uniform_real_distribution<float>& odist,
 		std::uniform_real_distribution<float>& rdist,
 		DirectX::XMFLOAT3 material);
-	void SpawnControlWindow(int id, Graphics& gfx) noexcept;
+	bool SpawnControlWindow(int id, Graphics& gfx) noexcept;
 private:
 	void SyncMaterial(Graphics& gfx) noexcept(!IS_DEBUG);
 private:
