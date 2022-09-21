@@ -7,6 +7,10 @@
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 GDIPlusManager gdpm;
 
 App::App() : wnd(800, 600, "3D Framework")
@@ -43,6 +47,12 @@ App::App() : wnd(800, 600, "3D Framework")
 	wnd.GFX().SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 
 	plight = std::make_unique<PointLight>(wnd.GFX());
+
+	Assimp::Importer imp;
+	auto model = imp.ReadFile("models\\pico.fbx",
+		aiProcess_Triangulate |
+		aiProcess_JoinIdenticalVertices
+	);
 }
 
 App::~App()

@@ -7,6 +7,15 @@
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\BlendedPhongPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\BlendedPhongVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\IndexedPhongPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\PhongPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -20,6 +29,12 @@
     </ContentFile>
     <ContentFile>
       <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\SolidVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\TexturedPhongPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\TexturedPhongVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>E:\CG\Projects\DXFramework\DXFramework\DXFramework\TexturePS.cso</FullPath>
