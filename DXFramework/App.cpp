@@ -2,18 +2,15 @@
 #include <memory>
 #include "Pyramid.h"
 #include "Box.h"
+#include "ModelTest.h"
 #include "SkinnedBox.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 GDIPlusManager gdpm;
 
-App::App() : wnd(800, 600, "3D Framework")
+App::App() : wnd(1280, 720, "3D Framework")
 {
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_real_distribution<float> adist(0.0f, 3.1415f * 2.0f);
@@ -21,19 +18,23 @@ App::App() : wnd(800, 600, "3D Framework")
 	std::uniform_real_distribution<float> odist(0.0f, 3.1415f * 0.3f);
 	std::uniform_real_distribution<float> rdist(6.0f, 20.0f);
 	std::uniform_real_distribution<float> cdist(0.0f, 1.0f);
-	std::uniform_int_distribution<int> sdist{ 0,2 };
+	std::uniform_int_distribution<int> sdist{ 0,4 };
 	std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
 	std::uniform_int_distribution<int> tdist{ 3,30 };
 
 	const DirectX::XMFLOAT3 mat = { cdist(rng),cdist(rng),cdist(rng) };
-	for (auto i = 0; i < 80; i++)
+	for (auto i = 0; i < 1; i++)
 	{
 		/*drawables.push_back(std::make_unique<SkinnedBox>(
 			wnd.GFX(), rng, adist, ddist, odist,
 			rdist));*/
-		drawables.push_back(std::make_unique<Box>(
+		/*drawables.push_back(std::make_unique<Box>(
 			wnd.GFX(), rng, adist, ddist,
-			odist, rdist, mat));
+			odist, rdist, mat));*/
+
+		drawables.push_back(std::make_unique<ModelTest>(
+			wnd.GFX(), rng, adist, ddist,
+			odist, rdist, mat, 0.1f));
 	}
 	for (auto& d : drawables)
 	{
@@ -47,12 +48,6 @@ App::App() : wnd(800, 600, "3D Framework")
 	wnd.GFX().SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 
 	plight = std::make_unique<PointLight>(wnd.GFX());
-
-	Assimp::Importer imp;
-	auto model = imp.ReadFile("models\\pico.fbx",
-		aiProcess_Triangulate |
-		aiProcess_JoinIdenticalVertices
-	);
 }
 
 App::~App()

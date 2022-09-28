@@ -77,8 +77,8 @@ Graphics::Graphics(HWND hWnd)
 	//Create depth stencil texture
 	wrl::ComPtr<ID3D11Texture2D> pDepthStencilTexture;
 	D3D11_TEXTURE2D_DESC depthTexDesc = {};
-	depthTexDesc.Width = 800u;
-	depthTexDesc.Height = 600u;
+	depthTexDesc.Width = 1920u;
+	depthTexDesc.Height = 1080u;
 	depthTexDesc.MipLevels = 1u;
 	depthTexDesc.ArraySize = 1u;
 	depthTexDesc.Format = DXGI_FORMAT_D32_FLOAT;
