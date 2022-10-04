@@ -6,6 +6,7 @@
 #include "SkinnedBox.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
+#include "VertexLayout.h"
 #include "imgui/imgui.h"
 
 GDIPlusManager gdpm;

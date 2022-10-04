@@ -120,26 +120,40 @@ public:
 	{
 		auto& element = layout.Resolve<Type>();
 		auto pAttr = pData + element.GetOffset();
-		switch (Type)
-		{
-		case VertexLayout::Position2D:
-			return *reinterpret_cast<DirectX::XMFLOAT2>(pAttr);
-		case VertexLayout::Position3D:
-			return *reinterpret_cast<DirectX::XMFLOAT3>(pAttr);
-		case VertexLayout::Texture2D:
-			return *reinterpret_cast<DirectX::XMFLOAT2>(pAttr);
-		case VertexLayout::Normal:
-			return *reinterpret_cast<DirectX::XMFLOAT3>(pAttr);
-		case VertexLayout::Float3Color:
-			return *reinterpret_cast<DirectX::XMFLOAT3>(pAttr);
-		case VertexLayout::Float4Color:
-			return *reinterpret_cast<DirectX::XMFLOAT4>(pAttr);
-		case VertexLayout::BGRAColor:
-			return *reinterpret_cast<BGRAColor>(pAttr);
-		}
 
-		assert("Invalid argument type" && false);
-		return 0u;
+		if constexpr (Type == VertexLayout::Position2D)
+		{
+			return *reinterpret_cast<DirectX::XMFLOAT2*>(pAttr);
+		}
+		else if constexpr (Type == VertexLayout::Position3D)
+		{
+			return *reinterpret_cast<DirectX::XMFLOAT3*>(pAttr);
+		}
+		else if constexpr (Type == VertexLayout::Texture2D)
+		{
+			return *reinterpret_cast<DirectX::XMFLOAT2*>(pAttr);
+		}
+		else if constexpr (Type == VertexLayout::Normal)
+		{
+			return *reinterpret_cast<DirectX::XMFLOAT3*>(pAttr);
+		}
+		else if constexpr (Type == VertexLayout::Float3Color)
+		{
+			return *reinterpret_cast<DirectX::XMFLOAT3*>(pAttr);
+		}
+		else if constexpr (Type == VertexLayout::Float4Color)
+		{
+			return *reinterpret_cast<DirectX::XMFLOAT4*>(pAttr);
+		}
+		else if constexpr (Type == VertexLayout::BGRAColor)
+		{
+			return *reinterpret_cast<BGRAColor*>(pAttr);
+		}
+		else
+		{
+			assert("Invalid argument type" && false);
+			return *reinterpret_cast<char*>(pAttr);
+		}
 	}
 	template<typename T>
 	void SetAttributeByIndex(size_t i, T&& val) noexcept(!IS_DEBUG)
